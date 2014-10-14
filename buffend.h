@@ -46,13 +46,13 @@ typedef struct tp_buffer{ // Estrutura utilizada para armazenar o buffer.
 // Union's utilizados na conversão de variáveis do tipo inteiro e double.
 
 union c_double{
-	
+
 	double dnum;
-	char double_cnum[sizeof(double)];	
+	char double_cnum[sizeof(double)];
 };
 
 union c_int{
-	
+
 	int  num;
 	char cnum[sizeof(int)];
 };
@@ -66,14 +66,14 @@ tp_buffer * initbuffer();
 
 /*
 	Esta função busca, no arquivo fs_object.dat, pelo nome da tabela retornando as informações que estão no dicionário em uma estrutura fs_objects
-	Caso o nome da tabela não exista, o programa aborta 
+	Caso o nome da tabela não exista, o programa aborta
 	*nTabela - Nome da tabela a ser buscado no dicionário de dados
 */
 struct fs_objects leObjeto(char *nTabela);
 
 /*
 	Esta função busca, no arquivo fs_schema.dat, pelas informações do objeto, carregando o esquema da tabela que é retornadado em tp_table
-	Caso o nome da tabela não exista, o programa aborta 
+	Caso o nome da tabela não exista, o programa aborta
 	*objeto - Objeto, já previamente inicializado em leObjeto(nTabela), que contém as informações sobre uma determinada tabela
 */
 tp_table *leSchema (struct fs_objects objeto);
@@ -107,7 +107,7 @@ int colocaTuplaBuffer(tp_buffer *buffer, int from, tp_table *campos, struct fs_o
 */
 int quantidadeTabelas();
 /*
-	Esta função verifica se um nome de tabela já está inserido no dicionario. 
+	Esta função verifica se um nome de tabela já está inserido no dicionario.
 	Retorna:
 		-> 1 se o nome existe no dicionario;
 		-> 0 se existe no dicionário.
@@ -115,7 +115,7 @@ int quantidadeTabelas();
 */
 int verificaNomeTabela(char *nomeTabela);
 /*
-	Esta função inicia um estrutura do tipo table, como nome de tabela passado. 
+	Esta função inicia um estrutura do tipo table, como nome de tabela passado.
 	Retorna:
 		-> a estrutura do tipo table iniciada;
 		-> ERRO_NOME_TABELA_INVALIDO se o nome passado já existir no dicionário.
@@ -123,7 +123,7 @@ int verificaNomeTabela(char *nomeTabela);
 */
 table *iniciaTabela(char *nomeTabela);
 /*
-	Esta função encadeia a lista de campos na estrutura de uma tabela que vai ser criada. 
+	Esta função encadeia a lista de campos na estrutura de uma tabela que vai ser criada.
 	Retorna:
 		-> a estrutura com a coluna inserida na lista.
 	*t - Estrutura da tabela à ser criada.
@@ -133,9 +133,9 @@ table *iniciaTabela(char *nomeTabela);
 */
 table *adicionaCampo(table *t,char *nomeCampo, char tipoCampo, int tamanhoCampo);
 /*
-	Esta função finaliza a tabela preveamente estrutura pelas funcoes iniciaTabela() e adicionaCampo(). 
+	Esta função finaliza a tabela preveamente estrutura pelas funcoes iniciaTabela() e adicionaCampo().
 	Escreve nos arquivos fs_object.dat e fs_schema.dat, a estrutura passada.
-	Retorna: 
+	Retorna:
 		-> SUCCESS quando teve sucesso na sua operaçãoç;
 		-> ERRO_ABRIR_ARQUIVO quando teve problemas ao abrir os arquivos fs_object.dat e fs_schema.dat;
 		-> ERRO_PARAMETRO quando a estrutura passada é inválida.
@@ -144,7 +144,7 @@ table *adicionaCampo(table *t,char *nomeCampo, char tipoCampo, int tamanhoCampo)
 int finalizaTabela(table *t);
 /*
 	Esta função inicia e aloca dinâmicamente uma lista de valores que vão ser inseridos em uma tabela.
-	Retorna: 
+	Retorna:
 		-> estrutura iniciada e alocad com o valor passado por parâmetro.
 		-> ERRO_DE_PARAMETRO, quando a estrutura enviada for inválida.
 	*c - Estrutura de valores que vão ser inseridos em uma tabela.
@@ -154,7 +154,7 @@ int finalizaTabela(table *t);
 column *insereValor(column *c, char *nomeCampo, char *valorCampo);
 /*
 	Esta função finaliza a inserção de valores em uma tabela. Assume que o usuário entrou com todos os campos de uma tupla completa.
-	Retorna: 
+	Retorna:
 		-> ERRO_ABRIR_ARQUIVO, quando ocorreu um erro ao abrir o arquivo fs_object.dat ou fs_schema.dat;
 		-> ERRO_NO_TAMANHO_STRING, quando ocorreu um erro no tamanho da string inserida;
 		-> ERRO_NOME_CAMPO, quando o nome do campo passado na estrutura;
@@ -176,7 +176,7 @@ int finalizaInsert(char *nome, column *c);
 */
 column * getPage(tp_buffer *buffer, tp_table *campos, struct fs_objects objeto, int page);
 /*
-	Esta função uma determinada tupla do buffer e retorna a mesma em uma estrutura do tipo column; 
+	Esta função uma determinada tupla do buffer e retorna a mesma em uma estrutura do tipo column;
 	A estrutura column possui informações de como manipular os dados
 	*buffer - Estrutura para armazenar tuplas na meméria
 	*campos - Estrutura que armazena esquema da tabela para ler os dados do buffer
@@ -185,3 +185,8 @@ column * getPage(tp_buffer *buffer, tp_table *campos, struct fs_objects objeto, 
 	*nTupla - Número da tupla a ser excluida, este número é relativo a página do buffer e não a todos os registros carregados
 */
 column * excluirTuplaBuffer(tp_buffer *buffer, tp_table *campos, struct fs_objects objeto, int page, int nTupla);
+
+void menu();
+void create();
+void insertt();
+void select();

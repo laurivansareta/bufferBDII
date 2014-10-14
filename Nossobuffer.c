@@ -1,7 +1,7 @@
 #include "buffend.h"
 
 int main(int rg, char *nomeTabela[]){
-	
+
 	int erro;
 
 	table *t = NULL;
@@ -26,13 +26,13 @@ int main(int rg, char *nomeTabela[]){
 		printf("Erro %d: na função finalizaTabela().\n", erro);
 		return 0;
 	}
-	
+
 	c = insereValor(c, "Nome", "Um");
 	c = insereValor(c, "Idade", "40");
 	c = insereValor(c, "Sexo", "F");
 	c = insereValor(c, "Obs", "Obs. Um");
 	c = insereValor(c, "Media", "2.5");
-	
+
 
 	c = insereValor(c, "Nome", "Dois");
 	c = insereValor(c, "Idade", "20");
@@ -59,8 +59,8 @@ int main(int rg, char *nomeTabela[]){
 		return 0;
 	}
 
-	struct fs_objects objeto = leObjeto(nomeTabela[1]);	
-	
+	struct fs_objects objeto = leObjeto(nomeTabela[1]);
+
 	tp_table *esquema = leSchema(objeto);
 
 	if(esquema == ERRO_ABRIR_ESQUEMA){
@@ -81,21 +81,21 @@ int main(int rg, char *nomeTabela[]){
 		printf("Erro %d: na função colocaTuplaBuffer().\n", erro);
 		return 0;
 	}
-	
+
 	erro = colocaTuplaBuffer(bufferpoll, 1, esquema, objeto);
 
 	if(erro != SUCCESS){
 		printf("Erro %d: na função colocaTuplaBuffer().\n", erro);
 		return 0;
 	}
-	
+
 	erro = colocaTuplaBuffer(bufferpoll, 2, esquema, objeto);
 
 	if(erro != SUCCESS){
 		printf("Erro %d: na função colocaTuplaBuffer().\n", erro);
 		return 0;
 	}
-	
+
 	column *tuplaE = excluirTuplaBuffer(bufferpoll, esquema, objeto, 0, 2); //pg, tupla
 	column *pagina = getPage(bufferpoll, esquema, objeto, 0);
 
@@ -107,13 +107,13 @@ int main(int rg, char *nomeTabela[]){
 		printf("Erro, na função getPage(), problemas no parametro.\n");
 		return 0;
 	}
-	
+
 	// PARA IMPRIMIR TUPLA EXCLUIDA -----------------------------
 	//-------------------------------------------------------------
 	printf("\nTupla excluída do Buffer.\n");
 	int j = 0;
 	for(j=0; j < objeto.qtdCampos; j++){
-		
+
 		if(tuplaE[j].tipoCampo == 'S')
 			printf("%s: %s ", tuplaE[j].nomeCampo,tuplaE[j].valorCampo);
 		else if(tuplaE[j].tipoCampo == 'I'){
@@ -129,14 +129,14 @@ int main(int rg, char *nomeTabela[]){
 		}
 		printf("\n");
 	}
-	
+
 	//-------------------------------------------------------------
 
 	// PARA IMPRIMIR PÁGINA ---------------------------------------
 	//-------------------------------------------------------------
 	printf("\nPágina armazenada na estrutura column *pagina.\n");
 	for(j=0; j < objeto.qtdCampos*bufferpoll[0].nrec; j++){
-		
+
 		if(pagina[j].tipoCampo == 'S')
 			printf("%s: %s ", pagina[j].nomeCampo,pagina[j].valorCampo);
 		else if(pagina[j].tipoCampo == 'I'){
@@ -153,9 +153,9 @@ int main(int rg, char *nomeTabela[]){
 		printf("\n");
 	}
 	printf("\n\n");
-	
+
 	//-------------------------------------------------------------
-	
+
 
 	erro = printbufferpoll(bufferpoll, esquema, objeto, 0);
 
