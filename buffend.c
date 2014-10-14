@@ -662,19 +662,63 @@ void menu(){
 void create(){
     int opcao;
     char nome[20];
-    printf("CREATE\n\n"
-           "1 - DATABASE"
-           "2 - TABLE"
+    printf("\nCREATE\n\n"
+           "1 - DATABASE\n"
+           "2 - TABLE\n"
            "Escolha uma das opções a seguir:");
     scanf("%d", &opcao);
-
+    system("cls");
     switch(opcao){
         case 1:{
-            printf("Digite o nome do banco: ");
+            printf("\nDigite o nome do banco: ");
             scanf("%s", &nome);
+            break;
         }
         case 2:{
+            int quant, a;
+            printf("\nDigite o nome da tabela: ");
+            scanf("%s", &nome);
+            printf("\nDigite a quantidade de atributos que a tabela terá:");
+            scanf("%d", &quant);
 
+            struct tp_table tabela[quant];
+
+            for(a=0; a < quant ; a++){
+
+                printf("\nDigite o nome do atributo %d: ", a+1);
+                scanf("%s", &tabela[a].nome);
+
+                printf("\n1 - Inteiro"
+                       "\n2 - Varchar"
+                       "\n3 - Double"
+
+                       "\n\nEscolha o tipo do atributo %d: ", a+1);
+                scanf("%d", &opcao);
+
+                switch(opcao){
+                    case 1:{
+                        tabela[a].tipo = 'i';
+                        printf("\nDigite o tamanho do inteiro: ");
+                        scanf("%d", &tabela[a].tam);
+                        break;
+                    }
+                    case 2:{
+                        tabela[a].tipo = 'v';
+
+                        printf("\nDigite o tamanho da string: ");
+                        scanf("%d", &tabela[a].tam);
+                        break;
+                    }
+                    case 3:{
+                        tabela[a].tipo = 'd';
+                        printf("\nDigite o tamanho do double: ");
+                        scanf("%d", &tabela[a].tam);
+                        break;
+                    }
+                }
+
+            }
+            break;
         }
     }
 }
