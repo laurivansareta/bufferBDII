@@ -731,9 +731,31 @@ void insertt(){
 }
 //----------------------------------------
 void select(){
-    int opcao;
-    printf("SELECT\n\n"
+    unsigned int opcao, quant, a;
+    printf("SELECT\n\n");
 
-           "Escolha uma das opções a seguir:");
-    scanf("%d", &opcao);
+    printf("Digite 0 se deseja todos os atributos (*).\n");
+
+    printf("Digite a quantidade de atributos a serem buscados: ");
+    scanf("%d", &quant);
+
+    char attr[quant][25];
+
+    if(opcao != 0){
+        for(a=0;a<quant;a++){
+            printf("Digite o nome do atributo %d que deseja buscar: ", a+1);
+            scanf("%s", &attr[a]);
+        }
+    }
+
+    printf("Quantas tabelas estarão envolvidas na busca: ");
+    scanf("%d", &quant);
+
+    char table[quant][25];
+
+    for(a=0;a<quant;a++){
+        printf("Digite a tabela %d: ", a+1);
+        scanf("%s", &table[a]);
+    }
+
 }
