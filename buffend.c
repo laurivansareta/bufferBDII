@@ -639,99 +639,145 @@ column * getPage(tp_buffer *buffer, tp_table *campos, struct fs_objects objeto, 
 //----------------------------------------
 void menu(){
     int opcao;
+    system("clear");
     printf("Trabalho de Banco de Dados II\n\n"
-           "1 - CREATE"
-           "2 - INSERT"
-           "3 - SELECT"
-           "Escolha uma das opções a seguir:");
+           "1 - CREATE    "
+           "2 - INSERT    "
+           "3 - SELECT    "
+           "\n\nEscolha uma das opções acima:\n");
     scanf("%d", &opcao);
 
-    switch(opcao){
-        case 1:{
+    system("clear");
+
+    switch (opcao) {
+        case 1:
             create();
-        }
-        case 2:{
+        	break;
+
+        case 2:
             insertt();
-        }
-        case 3:{
-            select();
-        }
+        	break;
+
+        case 3:
+            seleciona();
+            break;
     }
 }
 //----------------------------------------
 void create(){
-    int opcao;
-    char nome[20];
+    int quant, tam, a, erro, opcao;
+    char nome[TAMANHO_NOME_CAMPO], tipo;
+    table *t = NULL;
+
     printf("\nCREATE\n\n"
            "1 - DATABASE\n"
            "2 - TABLE\n"
-           "Escolha uma das opções a seguir:");
+           "\n\nEscolha uma das opções acima:\n");
     scanf("%d", &opcao);
-    system("cls");
-    switch(opcao){
-        case 1:{
+
+    system("clear");
+
+    //CASE 01
+    switch (opcao) {
+        case 1:
             printf("\nDigite o nome do banco: ");
-            scanf("%s", &nome);
+            scanf("%s", nome);
+            system("clear");
+            printf("\nVocê criou o banco: %s", nome);
             break;
-        }
-        case 2:{
-            int quant, a;
+        
+        case 2:
             printf("\nDigite o nome da tabela: ");
-            scanf("%s", &nome);
+            scanf("%s", nome);
+            system("clear");
+            
+            t = iniciaTabela(nome);
+
             printf("\nDigite a quantidade de atributos que a tabela terá:");
             scanf("%d", &quant);
-
-            struct tp_table tabela[quant];
+            system("clear");
 
             for(a=0; a < quant ; a++){
 
                 printf("\nDigite o nome do atributo %d: ", a+1);
-                scanf("%s", &tabela[a].nome);
-
+                scanf("%s", nome);
+                system("clear");
                 printf("\n1 - Inteiro"
-                       "\n2 - Varchar"
+                       "\n2 - String"
                        "\n3 - Double"
-
-                       "\n\nEscolha o tipo do atributo %d: ", a+1);
-                scanf("%d", &opcao);
-
-                switch(opcao){
-                    case 1:{
-                        tabela[a].tipo = 'i';
+                       "\n4 - Caracter");
+                
+                do
+                {
+                	printf("\n\nEscolha o tipo do atributo %d: ", a+1);
+                	scanf("%d", &opcao);
+                	system("clear");
+                } while ( opcao < 1 || opcao > 4 );
+                
+                //CASE 02
+                switch (opcao) {
+                	tam = 1;
+                    case 1:
+                        tipo = 'I';
                         printf("\nDigite o tamanho do inteiro: ");
-                        scanf("%d", &tabela[a].tam);
+                        scanf("%d", &tam);
+                        tam = tam*sizeof(int);
+                        system("clear");
                         break;
-                    }
-                    case 2:{
-                        tabela[a].tipo = 'v';
-
+                    
+                    case 2:
+                        tipo = 'S';
                         printf("\nDigite o tamanho da string: ");
-                        scanf("%d", &tabela[a].tam);
+                        scanf("%d", &tam);
+                        tam = tam*sizeof(char);
+                        system("clear");
                         break;
-                    }
-                    case 3:{
-                        tabela[a].tipo = 'd';
+                    
+                    case 3:
+                        tipo = 'D';
                         printf("\nDigite o tamanho do double: ");
-                        scanf("%d", &tabela[a].tam);
+                        scanf("%d", &tam);
+                        tam = tam*sizeof(float);
+                        system("clear");
                         break;
-                    }
-                }
 
-            }
-            break;
-        }
-    }
+                    case 4:
+                        tipo = 'C';	
+                        tam = sizeof(char);
+                        break;
+                }//FIM DO CASE 02
+
+            t = adicionaCampo(t, nome, tipo, tam);
+
+            }//FIM FOR
+            
+            erro = finalizaTabela(t);
+			
+			if(erro != SUCCESS){
+				system("clear");
+				printf("Erro %d: na função finalizaTabela().\n", erro);	
+			}
+
+        break;
+    }//FIM DO CASE 01
+
 }
 //----------------------------------------
 void insertt(){
     int opcao;
-    printf("INSERT\n\n"
-           "Escolha uma das opções a seguir:");
-    scanf("%d", &opcao);
+    printf("INSERT INTO\n\n"
+    		"1 - Inserir manualmente"
+    		"2 - Popular automaticamente"
+           "Escolha uma das opções acima:\n");
+    do
+    {
+    	scanf("%d", &opcao);
+    } while (opcao == 1 || opcao == 2);
+    
 }
 //----------------------------------------
-void select(){
-    unsigned int opcao, quant, a;
+void seleciona(){
+    unsigned int quant, a;
     printf("SELECT\n\n");
 
     printf("Digite 0 se deseja todos os atributos (*).\n");
@@ -739,9 +785,9 @@ void select(){
     printf("Digite a quantidade de atributos a serem buscados: ");
     scanf("%d", &quant);
 
-    char attr[quant][25];
+    char attr[quant];
 
-    if(opcao != 0){
+    if(quant != 0){
         for(a=0;a<quant;a++){
             printf("Digite o nome do atributo %d que deseja buscar: ", a+1);
             scanf("%s", &attr[a]);
@@ -751,7 +797,7 @@ void select(){
     printf("Quantas tabelas estarão envolvidas na busca: ");
     scanf("%d", &quant);
 
-    char table[quant][25];
+    char table[quant];
 
     for(a=0;a<quant;a++){
         printf("Digite a tabela %d: ", a+1);

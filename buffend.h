@@ -189,4 +189,4 @@ column * excluirTuplaBuffer(tp_buffer *buffer, tp_table *campos, struct fs_objec
 void menu();
 void create();
 void insertt();
-void select();
+void seleciona();
