@@ -1,4 +1,5 @@
 #include "buffend.h"
+#include <stdlib.h>
 // LEITURA DE DICIONARIO E ESQUEMA
 struct fs_objects leObjeto(char *nTabela){
 
@@ -639,34 +640,41 @@ column * getPage(tp_buffer *buffer, tp_table *campos, struct fs_objects objeto, 
 //----------------------------------------
 void menu(){
     int opcao;
-    system("clear");
-    printf("Trabalho de Banco de Dados II\n\n"
-           "1 - CREATE    "
-           "2 - INSERT    "
-           "3 - SELECT    "
-           "\n\nEscolha uma das opções acima:\n");
-    scanf("%d", &opcao);
+   
+    do{
+    	do{  	
+	    	system("clear");
+		    printf("Trabalho de Banco de Dados II\n\n"
+		           "1 - CREATE    "
+		           "2 - INSERT    "
+		           "3 - SELECT    "
+		           "\n\nEscolha uma das opções acima:\n");
+		    scanf("%d", &opcao);
+	    } while (opcao < 1 || opcao > 3);
 
-    system("clear");
+	    system("clear");
 
-    switch (opcao) {
-        case 1:
-            create();
-        	break;
+	    switch (opcao) {
+	        case 1:
+	            create();
+	        	break;
 
-        case 2:
-            insertt();
-        	break;
+	        case 2:
+	            insertt();
+	        	break;
 
-        case 3:
-            seleciona();
-            break;
-    }
+	        case 3:
+	            seleciona();
+	            break;
+	    }
+		printf("\nPressione 0-sair ou 1-Voltar Menu Principal\n");
+		scanf("%d", &opcao);
+    }while(opcao);
 }
 //----------------------------------------
 void create(){
     int quant, tam, a, erro, opcao;
-    char nome[TAMANHO_NOME_CAMPO], tipo;
+    char nome[TAMANHO_NOME_TABELA], tipo;
     table *t = NULL;
 
     printf("\nCREATE\n\n"
@@ -729,7 +737,6 @@ void create(){
                         tipo = 'S';
                         printf("\nDigite o tamanho da string: ");
                         scanf("%d", &tam);
-                        tam = tam*sizeof(char);
                         system("clear");
                         break;
                     
@@ -764,16 +771,51 @@ void create(){
 }
 //----------------------------------------
 void insertt(){
-    int opcao;
-    printf("INSERT INTO\n\n"
-    		"1 - Inserir manualmente"
-    		"2 - Popular automaticamente"
-           "Escolha uma das opções acima:\n");
-    do
+    int qtdCampos, aux, i, erro;
+    char nome[TAMANHO_NOME_TABELA], nomeAtt[TAMANHO_NOME_CAMPO];
+    struct fs_objects objeto;
+    column *c = NULL;
+
+    for (aux = 1; aux;)
     {
-    	scanf("%d", &opcao);
-    } while (opcao == 1 || opcao == 2);
-    
+	    system("clear");
+	    printf("INSERT INTO\n\n"
+	           "Digite o nome da tabela onde você deseja fazer inserção de tuplas:\n");
+	  	do{
+	  		scanf("%s", nome);
+	  	} while ( !(verificaNomeTabela(nome)) );
+	  	
+	  	objeto = leObjeto(nome);
+	  	qtdCampos = objeto.qtdCampos;
+	  	
+	  	for (i = 0; i < qtdCampos; i++)
+	  	{	
+	  		system("clear");
+	  		printf("\n\nDigite o NOME do %dº atributo\n", i+1);
+	  		scanf("%s", nomeAtt);
+	  		system("clear");
+	  		
+	  		char valorStr[TAMANHO_NOME_CAMPO];
+	           
+	        c = NULL;
+	        printf("\nDigite o valor a ser inserido no %dº atributo\n", i+1);
+	        scanf("%s", valorStr);
+	        c = insereValor(c, nome, valorStr);
+	        system("clear");
+	                
+		    erro = finalizaInsert(nome, c);
+			if(erro != SUCCESS){
+				printf("Erro %d: na função finalizaInsert()\n", erro);
+				printf("TENTE FAZER A INSERÇÃO NOVAMENTE DO ATRIBUTO: %s\n", nomeAtt );
+			return; 		
+	  	}
+
+		}
+		printf("Deseja fazer a inserção de mais algum registro?\n"
+			"1-SIM   0-NÃO\n");
+		scanf("%d", &aux);
+	}
+	    
 }
 //----------------------------------------
 void seleciona(){
