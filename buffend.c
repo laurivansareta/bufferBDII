@@ -797,10 +797,10 @@ void insertt(){
 	  		
 	  		char valorStr[TAMANHO_NOME_CAMPO];
 	           
-	        c = NULL;
+	        //c = NULL;
 	        printf("\nDigite o valor a ser inserido no %dº atributo\n", i+1);
 	        scanf("%s", valorStr);
-	        c = insereValor(c, nome, valorStr);
+	        c = insereValor(c, nomeAtt, valorStr);
 	        system("clear");
 	                
 		    erro = finalizaInsert(nome, c);
