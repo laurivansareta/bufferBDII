@@ -797,20 +797,20 @@ void insertt(){
 	  		
 	  		char valorStr[TAMANHO_NOME_CAMPO];
 	           
-	        //c = NULL;
 	        printf("\nDigite o valor a ser inserido no %dº atributo\n", i+1);
 	        scanf("%s", valorStr);
 	        c = insereValor(c, nomeAtt, valorStr);
-	        system("clear");
-	                
-		    erro = finalizaInsert(nome, c);
+	        system("clear");    
+		     		
+	  	}
+
+	  	erro = finalizaInsert(nome, c);
 			if(erro != SUCCESS){
 				printf("Erro %d: na função finalizaInsert()\n", erro);
 				printf("TENTE FAZER A INSERÇÃO NOVAMENTE DO ATRIBUTO: %s\n", nomeAtt );
-			return; 		
-	  	}
-
+			return;
 		}
+		c = NULL;
 		printf("Deseja fazer a inserção de mais algum registro?\n"
 			"1-SIM   0-NÃO\n");
 		scanf("%d", &aux);
