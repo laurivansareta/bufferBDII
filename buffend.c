@@ -819,31 +819,88 @@ void insertt(){
 }
 //----------------------------------------
 void seleciona(){
-    unsigned int quant, a;
-    printf("SELECT\n\n");
+    int quant, a, qtdCampos, result, auxTemp, *auxTempInt;
+    char nome[TAMANHO_NOME_TABELA];
+	double *auxTempDoub;
+    struct fs_objects objeto;
+    tp_table *esquema;
+    //column *pagina; //APAGAR
+    
+	system("clear");
+	printf("SELECT\n\n");
+	do{
+	    printf("Digite o nome da tabela que você deseja Visualizar os valores:\n");
+		scanf("%s", nome);
+	} while ( !(verificaNomeTabela(nome)) );//verifica se existe tabela com este nome
 
-    printf("Digite 0 se deseja todos os atributos (*).\n");
+	//verifica a quantidade de atributos da tabela digitada anteriormente
+	objeto = leObjeto(nome);
+	qtdCampos = objeto.qtdCampos;
+	esquema = leSchema(objeto);
+	tp_buffer *bufferPoll = initbuffer();
+	//verifica se teve erro ao abrir o esquema
+	if(esquema == ERRO_ABRIR_ESQUEMA){
+		printf("Erro ao criar o esquema.\n");
+		return;
+	}
+	//verifica se o buffer que foi alocado anteriormente teve sucesso ou erro
+	if(bufferPoll == ERRO_DE_ALOCACAO){
+		printf("Erro ao alocar memória para o buffer.\n");
+		return;
+	}
+	
+	system("clear");
 
-    printf("Digite a quantidade de atributos a serem buscados: ");
+	printf("Esta tabela tem %d atributos:\n\n", qtdCampos );
+	printf("Digite a quantidade de tuplas que deseja selecionar\n");
     scanf("%d", &quant);
 
-    char attr[quant];
-
+    //insere no vetor os nomes dos atributos, o que será buscado os dados
     if(quant != 0){
-        for(a=0;a<quant;a++){
-            printf("Digite o nome do atributo %d que deseja buscar: ", a+1);
-            scanf("%s", &attr[a]);
+    	//para select do numero de tupalas desejadas e com todos os atributos do banco de dados
+        for( a = 0; a < quant ; a++ ){
+            // verifica se o atributo existe
+            result = colocaTuplaBuffer(bufferPoll, a, esquema, objeto);
+            if (result != SUCCESS){
+             	printf("Erro %d: na inclusão dos dados no buffer.\n", result);
+             	return;
+             } 
         }
+    }else{
+            //printf("Digite o nome do atributo %d que deseja buscar: ", a+1);
+           // scanf("%s", &attr[a]);
+            // verifica se o atributo existe
+            //implementar verificacao se o atributo existe para select de alguns atributos
     }
 
-    printf("Quantas tabelas estarão envolvidas na busca: ");
-    scanf("%d", &quant);
+    for ( auxTemp = 0; auxTemp < quant; auxTemp++){
+    	column *pagina = getPage(bufferPoll, esquema, objeto, auxTemp);
+    	
+    	for ( a = 0; a < objeto.qtdCampos*bufferPoll[auxTemp].nrec; a++){
+    		printf("foi a:%d, qt:%d, tipo:%s\n",a, objeto.qtdCampos*bufferPoll[auxTemp].nrec, &pagina[a].tipoCampo);//APAGAR
+    		
+    		switch (pagina[a].tipoCampo){
+    			case 'S':
+    				//printf("s\n"); //APAGAR
+    				printf("%-15s: %s \n", pagina[a].nomeCampo, pagina[a].valorCampo );
+    			break;
+    			case 'I':
+    				//printf("i\n"); //APAGAR
+    				auxTempInt = (int *)&pagina[a].valorCampo[auxTemp];
+    				printf("%-15s: %d \n", pagina[a].nomeCampo, *auxTempInt );
+    			break;
+    			case 'D':
+    				//printf("D\n"); //APAGAR
+    				auxTempDoub = (double *)&pagina[a].valorCampo[auxTemp];
+    				printf("%-15s: %2.f \n", pagina[a].nomeCampo, *auxTempDoub );
+    			break;
+    			case 'C':
+    				//printf("C\n");//APAGAR
+    				printf("%-15s: %s \n", pagina[a].nomeCampo, &pagina[a].valorCampo[auxTemp] );
+    			break;
+    		} 
 
-    char table[quant];
-
-    for(a=0;a<quant;a++){
-        printf("Digite a tabela %d: ", a+1);
-        scanf("%s", &table[a]);
+    	} 
+    	
     }
-
 }
