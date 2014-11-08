@@ -727,9 +727,8 @@ void create(){
                 	tam = 1;
                     case 1:
                         tipo = 'I';
-                        printf("\nDigite o tamanho do inteiro: ");
                         scanf("%d", &tam);
-                        tam = tam*sizeof(int);
+                        tam = 1*sizeof(int);
                         system("clear");
                         break;
                     
@@ -742,9 +741,8 @@ void create(){
                     
                     case 3:
                         tipo = 'D';
-                        printf("\nDigite o tamanho do double: ");
                         scanf("%d", &tam);
-                        tam = tam*sizeof(float);
+                        tam = 1*sizeof(float);
                         system("clear");
                         break;
 
@@ -752,11 +750,11 @@ void create(){
                         tipo = 'C';	
                         tam = sizeof(char);
                         break;
-                }//FIM DO CASE 02
+                }
 
             t = adicionaCampo(t, nome, tipo, tam);
 
-            }//FIM FOR
+            }
             
             erro = finalizaTabela(t);
 			
@@ -766,7 +764,7 @@ void create(){
 			}
 
         break;
-    }//FIM DO CASE 01
+    }
 
 }
 //----------------------------------------
@@ -775,7 +773,7 @@ void insertt(){
     char nome[TAMANHO_NOME_TABELA], nomeAtt[TAMANHO_NOME_CAMPO];
     struct fs_objects objeto;
     column *c = NULL;
-
+	setbuf(stdin,NULL);
     for (aux = 1; aux;)
     {
 	    system("clear");
@@ -824,7 +822,6 @@ void seleciona(){
 	double *auxTempDoub;
     struct fs_objects objeto;
     tp_table *esquema;
-    //column *pagina; //APAGAR
     
 	system("clear");
 	printf("SELECT\n\n");
@@ -877,25 +874,20 @@ void seleciona(){
     	column *pagina = getPage(bufferPoll, esquema, objeto, auxTemp);
     	
     	for ( a = 0; a < objeto.qtdCampos*bufferPoll[auxTemp].nrec; a++){
-    		printf("foi a:%d, qt:%d, tipo:%s\n",a, objeto.qtdCampos*bufferPoll[auxTemp].nrec, &pagina[a].tipoCampo);//APAGAR
     		
     		switch (pagina[a].tipoCampo){
     			case 'S':
-    				//printf("s\n"); //APAGAR
     				printf("%-15s: %s \n", pagina[a].nomeCampo, pagina[a].valorCampo );
     			break;
     			case 'I':
-    				//printf("i\n"); //APAGAR
     				auxTempInt = (int *)&pagina[a].valorCampo[auxTemp];
     				printf("%-15s: %d \n", pagina[a].nomeCampo, *auxTempInt );
     			break;
     			case 'D':
-    				//printf("D\n"); //APAGAR
     				auxTempDoub = (double *)&pagina[a].valorCampo[auxTemp];
     				printf("%-15s: %2.f \n", pagina[a].nomeCampo, *auxTempDoub );
     			break;
     			case 'C':
-    				//printf("C\n");//APAGAR
     				printf("%-15s: %s \n", pagina[a].nomeCampo, &pagina[a].valorCampo[auxTemp] );
     			break;
     		} 
