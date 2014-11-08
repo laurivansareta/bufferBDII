@@ -727,7 +727,6 @@ void create(){
                 	tam = 1;
                     case 1:
                         tipo = 'I';
-                        scanf("%d", &tam);
                         tam = 1*sizeof(int);
                         system("clear");
                         break;
@@ -741,7 +740,6 @@ void create(){
                     
                     case 3:
                         tipo = 'D';
-                        scanf("%d", &tam);
                         tam = 1*sizeof(float);
                         system("clear");
                         break;
