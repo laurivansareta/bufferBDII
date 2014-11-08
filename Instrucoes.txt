@@ -1,0 +1,25 @@
+Arquivo de instruções de utilização do programa
+
+1° Criar Banco:
+	seleciona opção 1 CREATE;
+	seleciona opção 1 DATABASE;
+	digitar nome do banco;
+
+2° Criar Tabela:
+	seleciona opção 1 CREATE;
+	seleciona opção 1 TABLE;
+	digitar nome da tabela; 
+	escolher numero de atributos da tabela;
+	escolher nome do atributo n;
+	escoher tipo do atributo n;
+		para tipo string escolher tamanho da mesma;
+
+3° Inserir
+	escolher tabela onde deseja inserir;
+	digitar o nome do atributo n;
+	digitar o valor para o mesmo;
+
+4° select
+	escolher a tabela que deseja visualizar;
+	escolher quantass tuplas mostrar(em ordem de inserção); 
+	
